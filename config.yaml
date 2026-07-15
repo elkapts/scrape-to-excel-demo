@@ -1,0 +1,13 @@
+search:
+  # Adzuna country code: gb (UK), de (Germany), fr (France), pl (Poland),
+  # nl (Netherlands), it (Italy), es (Spain), at (Austria), etc.
+  country: "pl"
+  what: "python developer"     
+  where: ""
+  results_per_page: 50
+  max_pages: 5
+  sort_by: "date"
+  max_days_old: 30
+ 
+output:
+  filename_base: "vacancies_result"
