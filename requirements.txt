@@ -5,3 +5,5 @@ openpyxl
 lxml
 PyYAML
 python-dotenv
+pytest
+pytest-mock
