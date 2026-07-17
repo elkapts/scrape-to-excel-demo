@@ -22,11 +22,12 @@ from datetime import date
 import os
 from dotenv import load_dotenv
 
+from send_email import send_email_with_attachments
+
 load_dotenv()
 
-
 logging.basicConfig(
-    filename="scraper.log",
+    filename="logs/scraper.log",
     level=logging.INFO,
     format="%(asctime)s %(levelname)s %(message)s",
 )
@@ -151,9 +152,9 @@ def export(items, filename_base="vacancies_result"):
     df = pd.DataFrame(items)
     df["Collection date"] = date.today().isoformat()
 
-    df.to_csv(f"{filename_base}.csv", index=False, encoding="utf-8-sig")
+    df.to_csv(f"output/{filename_base}.csv", index=False, encoding="utf-8-sig")
 
-    with pd.ExcelWriter(f"{filename_base}.xlsx", engine="openpyxl") as writer:
+    with pd.ExcelWriter(f"output/{filename_base}.xlsx", engine="openpyxl") as writer:
         df.to_excel(writer, index=False, sheet_name="vacancies")
         worksheet = writer.sheets["vacancies"]
         for i, col in enumerate(df.columns):
@@ -166,7 +167,6 @@ def export(items, filename_base="vacancies_result"):
 if __name__ == "__main__":
     config = load_config()
     app_id, app_key = load_credentials()
-    print(app_id, app_key)
     if not app_id or not app_key or app_id != app_id:
         print(
             "Missing API credentials. Copy .env.example to .env and fill in your "
@@ -174,9 +174,16 @@ if __name__ == "__main__":
             "https://developer.adzuna.com/signup"
         )
     else:
+        filename_base = config["output"]["filename_base"]
         items = scrape_all(config, app_id, app_key)
-        export(items, config["output"]["filename_base"])
+        export(items, filename_base)
         print(
             f"Done: {len(items)} vacancies saved to "
-            f"{config['output']['filename_base']}.csv / .xlsx"
+            f"{filename_base}.csv / .xlsx"
         )
+        recipient = os.getenv("RECIPIENT_EMAIL")
+        if recipient and items:
+            print("\nPreparing to send mail...")
+            send_email_with_attachments(filename_base, recipient)
+        elif not recipient:
+            print("\nRECIPIENT_EMAIL not set in .env. Skipping sending the email.")

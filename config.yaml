@@ -2,8 +2,9 @@ search:
   # Adzuna country code: gb (UK), de (Germany), fr (France), pl (Poland),
   # nl (Netherlands), it (Italy), es (Spain), at (Austria), etc.
   country: "pl"
-  what: "python developer"     
-  where: ""
+  what: "Kierownik Robót Elektrycznych"     
+  where: "Warszawa"
+  distance: 30
   results_per_page: 50
   max_pages: 5
   sort_by: "date"
