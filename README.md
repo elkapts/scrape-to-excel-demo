@@ -1,105 +1,107 @@
-# European Job Monitoring (Adzuna API)
+# European Job Vacancy Monitor (Adzuna API)
 
-Collects job postings from the Adzuna job board (a job aggregator operating in 10+ European countries: Germany, the UK, France, Poland, Spain, Italy, and others) and saves them in Excel and CSV formats.
+Collects vacancies from **Adzuna** (a job aggregator covering 10+ European countries: Germany, UK, France, Poland, Spain, Italy, and more) and saves them to Excel and CSV.
 
-Uses the official, free, and documented API – no HTML scraping. This means it doesn't violate terms of use, won't break when the layout changes, and doesn't require a proxy or CAPTCHA bypass.
+Uses the **official, free, documented API** - not HTML scraping. This means it doesn't violate any terms of service, doesn't break when the site's markup changes, and needs no proxies or CAPTCHA bypassing.
 
-## 1. Installing Keys (One-Time)
+**Requirements:** Python 3.11+. Tested on Python 3.13 and 3.14 (stable). Python 3.15 is currently in beta (final release expected October 2026) - the code uses no version-specific features, so it should keep working once 3.15 ships, but treat it as untested until then.
 
-1. Register at https://developer.adzuna.com/signup (free, no moderation)
-2. Copy the `.env.example` file to `.env`:
+## 1. Set up your API keys (one-time)
+
+1. Sign up at https://developer.adzuna.com/signup (free, no approval wait)
+2. Copy `.env.example` to `.env`:
+   ```bash
+   cp .env.example .env
+   ```
+3. Open `.env` and fill in your keys:
+   ```
+   ADZUNA_APP_ID=your_app_id
+   ADZUNA_APP_KEY=your_app_key
+   ```
+
+The `.env` file contains secrets and must never be shared or committed to Git - it's already listed in `.gitignore`.
+
+## 2. Email delivery of results (optional)
+
+To have the result file emailed automatically after each run, add this block to `.env` (next to the Adzuna keys):
+
 ```bash
-cp .env.example .env
-```
-3. Open `.env` and enter your keys:
-```
-ADZUNA_APP_ID=your_app_id
-ADZUNA_APP_KEY=your_app_key
-```
-
-The `.env` file contains secrets and should never be shared with third parties or placed in Git – it is already added to `.gitignore`.
-
-## 4. Configuring email delivery of results (optional)
-
-If you want the completed job posting file to be automatically emailed to the client after each run, add the following block to .env (next to the Adzuna keys):
-
-```bash
-# SMTP settings (default for Gmail)
 SMTP_SERVER="smtp.gmail.com"
 SMTP_PORT=465
 SMTP_USER="your_email@gmail.com"
-
-# IMPORTANT: This must be a special "Application Password," not a regular password!
-SMTP_PASSWORD="app_password"
-
-# Client email (where to send files)
+SMTP_PASSWORD="your_app_password"   # a Gmail "App Password", not your regular password
 RECIPIENT_EMAIL="client_email@example.com"
 ```
 
-**How ​​to get the `SMTP_PASSWORD` (app password) for Gmail:**
+To generate a Gmail App Password: enable 2-Step Verification at https://myaccount.google.com/security, then create one at https://myaccount.google.com/apppasswords.
 
-1. Go to https://myaccount.google.com/security
-2. Enable two-factor authentication (2-Step Verification) if it isn't already enabled — without it, the option below won't appear.
-3. Go to https://myaccount.google.com/apppasswords
-4. In the "App name" field, enter any name, for example, `vacancy-scraper`
-5. Click **Create** — Google will display a 16-character password in the format `abcd efgh ijkl mnop`
-6. Enter it in `.env` **without spaces**: `abcdefghijklmnop`
-(password) It's only shown once—copy it immediately.
-Your regular Gmail password won't work for this—Google blocks third-party programs from logging in with it.
+## 3. Run the program
 
-## 5. Launching the program
-
-You don't need to install anything manually—the launch scripts automatically create the environment and install dependencies on the first run.
+No manual setup needed - the launch scripts create the environment and install dependencies on first run.
 
 **Windows:**
-Double-click `run.bat` (or run from the command line).
+Double-click `run.bat` (or run it from the command line).
 
 **macOS / Linux:**
 ```bash
-chmod +x run.sh # once, allow running
+chmod +x run.sh   # once, to allow running
 ./run.sh
 ```
 
-It will take a little longer the first time you run it (dependencies are installed), but it's faster on subsequent runs.
+The first run takes a bit longer (installing dependencies); later runs are faster.
 
-## 6. Search settings
+## 4. Search settings
 
-In `config.yaml` (no code, no keys—only search parameters):
+In `config.yaml` (no code, no keys - just search parameters):
 
-| Parameter | What does it mean |
+| Parameter | Meaning |
 |---|---|
-| `country` | Country code: `gb`, `de`, `fr`, `pl`, `es`, `it`, `nl`, `at`, etc. |
+| `country` | Adzuna country code: `gb`, `de`, `fr`, `pl`, `es`, `it`, `nl`, `at`, etc. |
 | `what` | job title / keywords |
-| `where` | city (blank — entire country) |
-| `max_pages` | how many pages to crawl (50 vacancies per page) |
-| `max_days_old` | do not show vacancies older than N days |
+| `where` | city (leave empty to search the whole country) |
+| `max_pages` | how many pages to walk through (50 vacancies per page) |
+| `max_days_old` | exclude vacancies older than N days |
 
-## 7. Result
+## 5. Output
 
-After running, the following will appear in the folder:
+After running, you'll find in the project folder:
 - `vacancies_result.csv`
 - `vacancies_result.xlsx`
-- `scraper.log` — the run log
-## 8. Regular Run (Optional)
+- `scraper.log` - run log
+
+## 6. Scheduled runs (optional)
 
 **macOS/Linux (cron):**
 ```bash
 0 9 * * * cd /path/to/project && ./run.sh
 ```
 
-**Windows (Task Scheduler):** Create a task that runs `run.bat` once a day.
+**Windows (Task Scheduler):** create a daily task that runs `run.bat`.
 
-## Project File Structure
+## 7. QA / Testing
+
+The project ships with an automated test suite (`tests/test_main.py`, 13 tests, 83% coverage of `main.py`) that runs automatically via GitHub Actions on every push (see `.github/workflows/ci.yml`). No real API calls are made in tests - all network calls are mocked.
+
+Run tests locally:
+```bash
+pip install -r requirements-dev.txt
+pytest tests/ -v --cov=main
+```
+
+## Project structure
 
 | File | Purpose | Contains secrets? |
 |---|---|---|
-| `main.py` | Data collection and export logic | None |
-| `config.yaml` | Search settings | None |
-| `.env` | API keys + SMTP email settings (created by you from `.env.example`) | **Yes** |
+| `main.py` | Data collection and export logic | No |
+| `config.yaml` | Search settings | No |
+| `.env` | API keys + SMTP settings (created by you from `.env.example`) | **Yes** |
 | `.env.example` | Template for `.env` | No |
-| `run.sh` / `run.bat` | One-command/click launch | No |
-| `requirements.txt` | Python dependencies list | No |
+| `run.sh` / `run.bat` | One-command/one-click launch | No |
+| `requirements.txt` | Production dependencies | No |
+| `requirements-dev.txt` | Testing dependencies | No |
+| `tests/test_main.py` | Automated test suite | No |
+| `.github/workflows/ci.yml` | CI pipeline configuration | No |
 
-## Support
+## Maintenance
 
-If Adzuna changes the API response format, you will need to edit `parse_results()` in `main.py`. Changing countries/job titles does not require any code changes—everything can be changed through `config.yaml`.
+If Adzuna changes its API response format, `parse_results()` in `main.py` will need updating. Changing countries/job titles requires no code changes - everything is controlled via `config.yaml`.
