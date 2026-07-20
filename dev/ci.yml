@@ -1,0 +1,48 @@
+name: QA - Automated tests
+
+# Tests run automatically on every push and Pull Request to main/master.
+# The real Adzuna API is NOT called - every network call in the tests is
+# mocked, so CI doesn't consume the free API quota and needs no secrets.
+#
+# IMPORTANT: this file must live at .github/workflows/ci.yml in the repo
+# root for GitHub Actions to detect it - it will NOT run from any other
+# location (e.g. dev/ci.yml is ignored by GitHub).
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # 3.13 / 3.14 are stable; 3.15 is in beta as of mid-2026
+        # (final release expected October 2026) - kept here to catch
+        # compatibility issues early, but allowed to fail without
+        # blocking the pipeline.
+        python-version: ["3.13", "3.14", "3.15"]
+        include:
+          - python-version: "3.15"
+            allow-failure: true
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: pip install -r requirements-dev.txt
+
+      - name: Run tests with coverage
+        run: pytest tests/ -v --cov=main --cov-report=term-missing
+
+      - name: Check shell script syntax
+        run: bash -n run.sh

@@ -31,6 +31,12 @@ logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s %(levelname)s %(message)s",
 )
+OUTPUT_DIR = "output"
+LOGS_DIR = "logs"
+
+os.makedirs(OUTPUT_DIR, exist_ok=True)
+os.makedirs(LOGS_DIR, exist_ok=True)
+
 # all events (requests, errors, results) are written to scraper.log —
 # this is the "logging and monitoring module" from the specifications
 
@@ -104,9 +110,9 @@ def parse_results(raw_json):
 
         items.append(
             {
-                "Job Title": job.get("title"),
+                "Title": job.get("title"),
                 "Company": company,
-                "City": location,
+                "Location": location,
                 "Category": category,
                 "Salary From": salary_min,
                 "Salary Up": salary_max,
@@ -121,6 +127,7 @@ def parse_results(raw_json):
 def scrape_all(config, app_id, app_key):
     """Walks through all pages up to max_pages and collects every vacancy into one list."""
     all_items = []
+
     max_pages = config["search"]["max_pages"]
 
     for page in range(1, max_pages + 1):
@@ -152,9 +159,11 @@ def export(items, filename_base="vacancies_result"):
     df = pd.DataFrame(items)
     df["Collection date"] = date.today().isoformat()
 
-    df.to_csv(f"output/{filename_base}.csv", index=False, encoding="utf-8-sig")
-
-    with pd.ExcelWriter(f"output/{filename_base}.xlsx", engine="openpyxl") as writer:
+    csv_path = os.path.join(OUTPUT_DIR, f"{filename_base}.csv")
+    df.to_csv(csv_path, index=False, encoding="utf-8-sig")
+    
+    xlsx_path = os.path.join(OUTPUT_DIR, f"{filename_base}.xlsx")
+    with pd.ExcelWriter(xlsx_path, engine="openpyxl") as writer:
         df.to_excel(writer, index=False, sheet_name="vacancies")
         worksheet = writer.sheets["vacancies"]
         for i, col in enumerate(df.columns):
