@@ -3,6 +3,14 @@
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Coverage](https://img.shields.io/badge/coverage-83%25-brightgreen)
 
+# European Job Vacancy Monitor (Adzuna API)
+
+Collects vacancies from **Adzuna** (a job aggregator covering 10+ European countries: Germany, UK, France, Poland, Spain, Italy, and more) and saves them to Excel and CSV.
+
+Uses the **official, free, documented API** - not HTML scraping. This means it doesn't violate any terms of service, doesn't break when the site's markup changes, and needs no proxies or CAPTCHA bypassing.
+
+**Requirements:** Python 3.11+. Tested on Python 3.13 and 3.14 (stable). Python 3.15 is currently in beta (final release expected October 2026) - the code uses no version-specific features, so it should keep working once 3.15 ships, but treat it as untested until then.
+
 ## Why I built this
 
 A freelance client needed ongoing visibility into European job market data
@@ -14,15 +22,7 @@ usage policy.
 
 ## What it looks like
 
-![Result preview](docs/ScreenRecording2026-07-20at14.05.08-ezgif.com-video-to-gif-converter.gif)
-
-# European Job Vacancy Monitor (Adzuna API)
-
-Collects vacancies from **Adzuna** (a job aggregator covering 10+ European countries: Germany, UK, France, Poland, Spain, Italy, and more) and saves them to Excel and CSV.
-
-Uses the **official, free, documented API** - not HTML scraping. This means it doesn't violate any terms of service, doesn't break when the site's markup changes, and needs no proxies or CAPTCHA bypassing.
-
-**Requirements:** Python 3.11+. Tested on Python 3.13 and 3.14 (stable). Python 3.15 is currently in beta (final release expected October 2026) - the code uses no version-specific features, so it should keep working once 3.15 ships, but treat it as untested until then.
+![Result preview](docs/demo.gif)
 
 ## 1. Set up your API keys (one-time)
 
