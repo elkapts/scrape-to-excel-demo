@@ -1,3 +1,21 @@
+![Tests](https://github.com/elkapts/scrape-to-excel-demo/actions/workflows/ci.yml/badge.svg)
+![Python](https://img.shields.io/badge/python-3.13%2B-blue)
+![License](https://img.shields.io/badge/license-MIT-green)
+![Coverage](https://img.shields.io/badge/coverage-83%25-brightgreen)
+
+## Why I built this
+
+A freelance client needed ongoing visibility into European job market data
+without relying on fragile HTML scraping that breaks on every site redesign
+or violates a platform's terms of service. This project uses an official,
+documented API instead — the same result (a clean spreadsheet), delivered
+in a way that keeps working and stays on the right side of the source's
+usage policy.
+
+## What it looks like
+
+![Result preview](docs/ScreenRecording2026-07-20at14.05.08-ezgif.com-video-to-gif-converter.gif)
+
 # European Job Vacancy Monitor (Adzuna API)
 
 Collects vacancies from **Adzuna** (a job aggregator covering 10+ European countries: Germany, UK, France, Poland, Spain, Italy, and more) and saves them to Excel and CSV.
