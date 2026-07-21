@@ -40,9 +40,19 @@ jobs:
 
       - name: Install dependencies
         run: pip install -r requirements_dev.txt
-
+      
+      - name: Lint with ruff
+        run: ruff check .
+      
+      - name: Check formatting with black
+        run: black --check .
+ 
+      - name: Type-check with mypy
+        run: mypy main.py send_email.py --config-file pyproject.toml
+ 
       - name: Run tests with coverage
         run: pytest tests/ -v --cov=main --cov-report=term-missing
-
+ 
       - name: Check shell script syntax
         run: bash -n run.sh
+ 
