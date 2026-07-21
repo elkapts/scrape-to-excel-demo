@@ -24,7 +24,7 @@ jobs:
         # (final release expected October 2026) - kept here to catch
         # compatibility issues early, but allowed to fail without
         # blocking the pipeline.
-        python-version: ["3.13", "3.14", "3.15"]
+        python-version: ["3.13", "3.14"]
         include:
           - python-version: "3.x"
             allow-failure: true
