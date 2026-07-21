@@ -1,4 +1,4 @@
-![Tests](https://github.com/elkapts/scrape-to-excel-demo/actions/workflows/ci.yml/badge.svg)
+![Tests](https://github.com/elkapts/scrape-to-excel-demo/dev/ci.yml/badge.svg)
 ![Python](https://img.shields.io/badge/python-3.13%2B-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Coverage](https://img.shields.io/badge/coverage-83%25-brightgreen)
@@ -9,7 +9,12 @@ Collects vacancies from **Adzuna** (a job aggregator covering 10+ European count
 
 Uses the **official, free, documented API** - not HTML scraping. This means it doesn't violate any terms of service, doesn't break when the site's markup changes, and needs no proxies or CAPTCHA bypassing.
 
-**Requirements:** Python 3.11+. Tested on Python 3.13 and 3.14 (stable). Python 3.15 is currently in beta (final release expected October 2026) - the code uses no version-specific features, so it should keep working once 3.15 ships, but treat it as untested until then.
+## Requirements
+
+Python 3.11+. Tested on Python 3.13 and 3.14 (stable). Python 3.15 is
+currently in beta (final release expected October 2026) - the code uses
+no version-specific features, so it should keep working once 3.15 ships,
+but treat it as untested until then.
 
 ## Why I built this
 
@@ -82,10 +87,10 @@ In `config.yaml` (no code, no keys - just search parameters):
 
 ## 5. Output
 
-After running, you'll find in the project folder:
-- `vacancies_result.csv`
-- `vacancies_result.xlsx`
-- `scraper.log` - run log
+After running, you'll find:
+- `output/vacancies_result.csv`
+- `output/vacancies_result.xlsx`
+- `logs/scraper.log` - run log
 
 ## 6. Scheduled runs (optional)
 
