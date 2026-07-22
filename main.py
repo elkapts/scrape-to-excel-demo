@@ -27,6 +27,8 @@ from send_email import send_email_with_attachments
 
 load_dotenv()
 
+os.makedirs("logs", exist_ok=True)
+
 logging.basicConfig(
     filename="logs/scraper.log",
     level=logging.INFO,
