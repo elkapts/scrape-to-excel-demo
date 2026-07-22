@@ -1,0 +1,40 @@
+name: Refresh vacancy data
+
+on:
+  schedule:
+    # Runs once a day at 06:00 UTC. Adjust to taste - cron syntax is
+    # "minute hour day month day-of-week".
+    - cron: "0 8 * * 7"
+  workflow_dispatch: {}
+ 
+jobs:
+  refresh-data:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+ 
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+ 
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+ 
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+ 
+      - name: Run the collector
+        env:
+          ADZUNA_APP_ID: ${{ secrets.ADZUNA_APP_ID }}
+          ADZUNA_APP_KEY: ${{ secrets.ADZUNA_APP_KEY }}
+        run: python main.py
+ 
+      - name: Commit updated data if it changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add output/vacancies_result.csv
+          git diff --staged --quiet && echo "No changes to commit" || git commit -m "Refresh vacancy data [automated]"
+          git push

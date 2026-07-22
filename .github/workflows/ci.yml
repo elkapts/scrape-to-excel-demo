@@ -51,7 +51,7 @@ jobs:
         run: mypy main.py send_email.py --config-file pyproject.toml
  
       - name: Run tests with coverage
-        run: pytest tests/ -v --cov=main --cov-report=term-missing
+        run: pytest tests/ -v --cov=main --cov=dashboard --cov-report=term-missing
  
       - name: Check shell script syntax
         run: bash -n run.sh
