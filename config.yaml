@@ -4,7 +4,7 @@ search:
   country: "pl"
   what: "Kierownik Robót Elektrycznych"     
   where: "Warszawa"
-  distance: 30
+  distance: 7
   results_per_page: 50
   max_pages: 5
   sort_by: "date"
