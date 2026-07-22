@@ -199,7 +199,7 @@ if __name__ == "__main__":
             "https://developer.adzuna.com/signup"
         )
     else:
-        filename_base = config["output"]["filename_base"]
+        filename_base = config["output"]["vacancies_result"]
         items = scrape_all(config, app_id, app_key)
         export(items, filename_base)
         print(f"Done: {len(items)} vacancies saved to " f"{filename_base}.csv / .xlsx")
