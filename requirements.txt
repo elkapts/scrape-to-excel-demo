@@ -7,3 +7,8 @@ PyYAML
 python-dotenv
 pytest
 pytest-mock
+
+# Dashboard (optional - only needed to run dashboard.py)
+streamlit>=1.60
+plotly>=5.24
+pandas
