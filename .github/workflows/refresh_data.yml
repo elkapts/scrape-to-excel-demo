@@ -34,6 +34,7 @@ jobs:
           SMTP_SERVER: ${{ secrets.SMTP_SERVER }}
           SMTP_PORT: ${{ secrets.SMTP_PORT }}
           RECIPIENT_EMAIL: ${{ secrets.RECIPIENT_EMAIL }}
+          STREAMLITE_LINK: ${{ secrets.STREAMLITE_LINK }}
         run: python main.py
  
       - name: Commit updated data if it changed
