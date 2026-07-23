@@ -30,25 +30,44 @@ def send_email_with_attachments(filename_base: str, recipient_email: str) -> Non
     smtp_port = int(smtp_port_str) if smtp_port_str else 465
 
     # Create a message object
-    msg = MIMEMultipart()
+    msg = MIMEMultipart("mixed")
     msg["From"] = sender_email
     msg["To"] = recipient_email
     msg["Subject"] = f"Job search results from {date.today().strftime('%d.%m.%Y')}"
 
     # The text of the letter itself (the body of the message)
-    body = (
+    dashboard_link = os.getenv("STREAMLITE_LINK")
+
+    text_body = (
         "Greetings!\n\n"
         "The script has successfully completed searching for vacancies matching your request.\n"
         "The latest results files (in CSV and Excel formats) are attached to this email.\n\n"
+        f"View the live dashboard: {dashboard_link}\n\n"
         "Have a nice day!"
     )
-    msg.attach(MIMEText(body, "plain", "utf-8"))
 
+    html_body = f"""\
+    <html>
+    <body>
+        <p>Greetings!</p>
+        <p>The script has successfully completed searching for vacancies matching your request.<br>
+        The latest results files (in CSV and Excel formats) are attached to this email.</p>
+        <p><a href="{dashboard_link}">View the live dashboard</a></p>
+        <p>Have a nice day!</p>
+    </body>
+    </html>
+    """
+    
+    alt = MIMEMultipart("alternative")
+    alt.attach(MIMEText(text_body, "plain", "utf-8"))
+    alt.attach(MIMEText(html_body, "html", "utf-8"))
+    msg.attach(alt)
+    
     # List of files we want to attach
     files_to_send = [
     os.path.join("output", f"{filename_base}.csv"),
     os.path.join("output", f"{filename_base}.xlsx"),
-]
+    ]
 
     for file_path in files_to_send:
         if os.path.exists(file_path):

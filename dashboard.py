@@ -14,10 +14,11 @@ data this dashboard displays.
 """
 
 import os
+
 import pandas as pd
 import plotly.express as px
 import streamlit as st
- 
+
 DATA_PATH = os.environ.get(
     "VACANCY_DATA_PATH",
     os.path.join(os.path.dirname(os.path.abspath(__file__)), "output", "vacancies_result.csv"),
