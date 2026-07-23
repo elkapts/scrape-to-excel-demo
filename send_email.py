@@ -45,7 +45,10 @@ def send_email_with_attachments(filename_base: str, recipient_email: str) -> Non
     msg.attach(MIMEText(body, "plain", "utf-8"))
 
     # List of files we want to attach
-    files_to_send = [f"{filename_base}.csv", f"{filename_base}.xlsx"]
+    files_to_send = [
+    os.path.join("output", f"{filename_base}.csv"),
+    os.path.join("output", f"{filename_base}.xlsx"),
+]
 
     for file_path in files_to_send:
         if os.path.exists(file_path):
