@@ -57,16 +57,16 @@ def send_email_with_attachments(filename_base: str, recipient_email: str) -> Non
     </body>
     </html>
     """
-    
+
     alt = MIMEMultipart("alternative")
     alt.attach(MIMEText(text_body, "plain", "utf-8"))
     alt.attach(MIMEText(html_body, "html", "utf-8"))
     msg.attach(alt)
-    
+
     # List of files we want to attach
     files_to_send = [
-    os.path.join("output", f"{filename_base}.csv"),
-    os.path.join("output", f"{filename_base}.xlsx"),
+        os.path.join("output", f"{filename_base}.csv"),
+        os.path.join("output", f"{filename_base}.xlsx"),
     ]
 
     for file_path in files_to_send:
