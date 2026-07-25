@@ -74,7 +74,7 @@ After running, you'll find in the project folder:
 - `output/vacancies_result.xlsx`
 - `logs/scraper.log` - run log
 
-![Demo xlsx demonstration](docs/demo.gif)
+![XLSX demonstration](docs/demo.gif)
 
 ## 6. Interactive dashboard (optional)
 
