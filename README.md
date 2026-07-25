@@ -74,6 +74,8 @@ After running, you'll find in the project folder:
 - `output/vacancies_result.xlsx`
 - `logs/scraper.log` - run log
 
+![XLSX demonstration](docs/demo.gif)
+
 ## 6. Interactive dashboard (optional)
 
 For a visual, filterable view of the collected data instead of opening the
@@ -92,6 +94,8 @@ This opens a browser tab with:
 The dashboard only reads `output/vacancies_result.csv` - it never calls the
 Adzuna API itself. Run `main.py` (via `run.sh`/`run.bat`) first to generate
 or refresh the data; the dashboard picks up the latest file automatically.
+
+![Dashboard demonstration](docs/dashboard.gif)
 
 ## 7. Deploy the dashboard for a client (Streamlit Community Cloud)
 
